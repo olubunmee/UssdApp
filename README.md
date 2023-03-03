@@ -2,7 +2,7 @@
 A simple USSD application that can create account, deposit, withdraw and check balace.
 
 # TOOLS AND SOFTWARE USED
-Intellij idea, MongoDB, Maven, Postman, Restful tool, Infobip SMS api
+Intellij idea, MongoDB, Maven, Postman, Restful tool, Infobip SMS API
 
 # TO RUN PROJECT
 $ mvn spring-boot:run
