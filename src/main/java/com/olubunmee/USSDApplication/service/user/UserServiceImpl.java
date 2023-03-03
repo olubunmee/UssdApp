@@ -2,12 +2,13 @@ package com.olubunmee.USSDApplication.service.user;
 
 import com.olubunmee.USSDApplication.data.dto.SmsRequest;
 import com.olubunmee.USSDApplication.data.model.Destination;
-import com.olubunmee.USSDApplication.data.model.Messages;
+import com.olubunmee.USSDApplication.data.model.Message;
 import com.olubunmee.USSDApplication.data.model.User;
 import com.olubunmee.USSDApplication.data.model.Wallet;
 import com.olubunmee.USSDApplication.exception.UssdException;
 import com.olubunmee.USSDApplication.repository.UserRepository;
 import com.olubunmee.USSDApplication.service.sms.SmsService;
+import jakarta.annotation.PreDestroy;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -42,7 +43,7 @@ public class UserServiceImpl implements UserService {
 
         String message = "Deposit of" + amount + "Successful";
         smsService.send(SmsRequest.builder()
-                .messages(List.of(Messages.builder()
+                .messages(List.of(Message.builder()
                         .destinations(List.of(Destination.builder()
                                 .to(phone)
                                 .build()))
@@ -71,7 +72,7 @@ public class UserServiceImpl implements UserService {
 
         String message = "Withdrawal of" + amount + "Successful";
         smsService.send(SmsRequest.builder()
-                .messages(List.of(Messages.builder()
+                .messages(List.of(Message.builder()
                         .destinations(List.of(Destination.builder()
                                 .to(phone)
                                 .build()))
@@ -132,6 +133,16 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean hasPendingDeposit(String phone) {
         return findUser(phone).isHasPendingDeposit();
+    }
+
+    @PreDestroy
+    public void cleanUp() {
+        List<User> users = userRepository.findAll();
+        users.forEach(user -> {
+            user.setHasPendingWithdrawal(false);
+            user.setHasPendingDeposit(false);
+            userRepository.save(user);
+        });
     }
 
     @Override

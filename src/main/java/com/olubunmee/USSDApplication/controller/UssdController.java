@@ -20,9 +20,12 @@ public class UssdController {
 
     @PostMapping("/loadMenu")
     public String performUssdOperation(@RequestBody UssdRequest ussdRequest) {
+
         if (!userService.existByPhoneNumber(ussdRequest.getPhone()) && ussdRequest.getCommand().equals("1")) {
-            return "please create an Account First";
+            userService.createAccount(ussdRequest.getPhone(), ussdRequest.getPin());
+            return "An account had been created for you with " + ussdRequest.getPhone();
         }
+
         switch (ussdRequest.getCommand()) {
             case "1" -> {
                 if (userService.hasPendingDeposit(ussdRequest.getPhone())) {
@@ -43,7 +46,7 @@ public class UssdController {
                 ussdRequest.setAction(Action.DEPOSIT);
             }
             case "3" -> {
-                if (userService.hasPendingDeposit(ussdRequest.getPhone())){
+                if (userService.hasPendingDeposit(ussdRequest.getPhone())) {
                     return userService.deposit(BigDecimal.valueOf(10000), ussdRequest.getPhone());
                 }
                 if (userService.hasPendingWithdrawal(ussdRequest.getPhone())) {

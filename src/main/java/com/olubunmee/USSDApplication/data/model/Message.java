@@ -10,8 +10,8 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Messages {
-    private List<Destination> destinations;
+public class Message {
     private String from;
+    private List<Destination> destinations = new ArrayList<>();
     private String text;
 }

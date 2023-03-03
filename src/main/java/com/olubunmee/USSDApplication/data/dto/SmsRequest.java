@@ -1,6 +1,6 @@
 package com.olubunmee.USSDApplication.data.dto;
 
-import com.olubunmee.USSDApplication.data.model.Messages;
+import com.olubunmee.USSDApplication.data.model.Message;
 import lombok.*;
 
 import java.util.ArrayList;
@@ -12,5 +12,5 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 public class SmsRequest {
-    private List<Messages> messages = new ArrayList<>();
+    private List<Message> messages = new ArrayList<>();
 }
