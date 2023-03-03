@@ -1,0 +1,5 @@
+spring:
+  data:
+    mongodb:
+      database: ussd
+      uri: mongodb://localhost:27017/ussd
