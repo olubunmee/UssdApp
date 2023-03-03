@@ -19,6 +19,7 @@ public class SmsServiceImpl implements SmsService{
     private final RestTemplate restTemplate;
     @Value("${SMS_API_KEY:}")
     private String smsApiKey;
+
     @Override
     @Async
     public void send(SmsRequest request) {

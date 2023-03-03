@@ -7,6 +7,7 @@ import com.olubunmee.USSDApplication.data.model.User;
 import com.olubunmee.USSDApplication.data.model.Wallet;
 import com.olubunmee.USSDApplication.exception.UssdException;
 import com.olubunmee.USSDApplication.repository.UserRepository;
+import com.olubunmee.USSDApplication.service.payment.PaymentService;
 import com.olubunmee.USSDApplication.service.sms.SmsService;
 import jakarta.annotation.PreDestroy;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +22,7 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final SmsService smsService;
+    private final PaymentService paymentService;
 
     @Override
     public void createAccount(String phone, String pin) {
@@ -47,13 +49,13 @@ public class UserServiceImpl implements UserService {
                         .destinations(List.of(Destination.builder()
                                 .to(phone)
                                 .build()))
-                        .from("ussd app")
+                        .from("OLUBUNMEE USSD APP")
                         .text(message)
                         .build()))
                 .build());
+        paymentService.makePayment(phone, amount);
         return "Deposit of " + amount + " is Successful";
     }
-
 
     @Override
     @Transactional
@@ -76,10 +78,11 @@ public class UserServiceImpl implements UserService {
                         .destinations(List.of(Destination.builder()
                                 .to(phone)
                                 .build()))
-                        .from("ussd app")
+                        .from("OLUBUNMEE USSD APP")
                         .text(message)
                         .build()))
                 .build());
+        paymentService.withdraw(phone, amount);
         return "Withdrawal of " + amount + " is Successful";
     }
 

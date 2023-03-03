@@ -39,9 +39,8 @@ public class UssdServiceImpl implements UssdService {
             }
             case LOAD_MENU -> {
                 return """
-                        Welcome to SENSEI app,
+                        Welcome to OLUBUNMEE USSD APP,
                         what would you like to do?
-                        
                         1. Create Account
                         2. Deposit
                         3. Withdraw
